@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'login.dart';
 
 // void main() async {
 //   //📲 runApp을 수행하기전에 비동기 작업을 할 경우 추가해주는 코드입니다
@@ -92,7 +92,16 @@ class _InsertDataScreenState extends State<InsertDataScreen> {
             ElevatedButton(
               onPressed: insertPlatform,
               child: const Text('platforms 테이블에 데이터 입력'),
-            )
+            ),
+
+            ElevatedButton(
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder : (context)=> const LogInScreen()),
+                );
+              }, 
+              child: const Text("로그인"))
           ],
         ),
       ),
