@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/login.dart';
+import 'package:flutter_application_1/rename.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SubscribeListScreen extends StatefulWidget{
@@ -15,12 +17,24 @@ class SubscribeListScreenState extends State<SubscribeListScreen>{
   List<String> platformList = [];
   bool isLoading = true;
 
+  String username = "";
+
+  
+
   Future<void> loadPlatform() async{
     final user = supabase.auth.currentUser;
 
     if(user == null){
       return;
     }
+
+    final userdata = await supabase
+    .from('users')
+    .select('username')
+    .eq('user_id', user.id)
+    .single();
+    
+    username = userdata['username'] as String;
 
     final data = await supabase
     .from('subscribe_info')
@@ -58,13 +72,60 @@ class SubscribeListScreenState extends State<SubscribeListScreen>{
       appBar: AppBar(title: const Text("My Platforms")),
       body: isLoading
         ? const Center(child: CircularProgressIndicator())
-        :ListView.builder(
-          itemCount: platformList.length,
-          itemBuilder: (context, index){
-            return ListTile(
-              title: Text(platformList[index].toString()),
-            );
-          },
+        :Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Text(username),
+
+            const SizedBox(height : 20),
+
+            Expanded( 
+              child: ListView.builder(
+              itemCount: platformList.length,
+              itemBuilder: (context, index){
+                return ListTile(
+                  title: Text(platformList[index].toString()),
+                );
+              },
+              ),
+            ),
+
+            const SizedBox(height : 20),
+
+            Row(
+              children:[
+
+                ElevatedButton(
+                  onPressed: () async{
+                    supabase.auth.signOut();
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context)=>LogInScreen()
+                      )
+                    );
+                  }, 
+                  child: const Text("Log Out")
+                ), 
+
+                ElevatedButton(
+                  onPressed: () async{
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context)=>RenameScreen()
+                      )
+                    );
+                  }, 
+                  child: const Text("Rename")
+                ), 
+              ]
+            )      
+          ]
+        )
         )
     );
   }
