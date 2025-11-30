@@ -48,3 +48,6 @@ app.*.map.json
 
 #project Setting
 *.env
+
+#build_generated
+generated_*
