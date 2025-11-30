@@ -1,110 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'login.dart';
-
-// void main() async {
-//   //📲 runApp을 수행하기전에 비동기 작업을 할 경우 추가해주는 코드입니다
-//   WidgetsFlutterBinding.ensureInitialized();
-  
-//   //📲 dotenv를 가져오는 부분
-//   await dotenv.load();
-  
-//   //📲 dotenv 패키지를 사용해서 민감한 정보의 값들을 가져옵니다
-//   await Supabase.initialize(
-//     url: dotenv.get("PROJECT_URL"),
-//     anonKey: dotenv.get("PROJECT_API_KEY"),
-//   );
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: '구독 관리',
-//       home: Scaffold(
-//         appBar: AppBar(title: const Text('구독 관리')),
-//         body: const Center(
-//           child: Text('Supabase 연결 완료!'),
-//         ),
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter_localizations/flutter_localizations.dart';
+import './view/theme/style.dart';
+import './view/home/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+  await dotenv.load(); // .env 파일 로드
+  
   await Supabase.initialize(
     url: dotenv.get("PROJECT_URL"),
     anonKey: dotenv.get("PROJECT_API_KEY"),
   );
-  runApp(const MyApp());
+
+  runApp(const SubscriptionApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SubscriptionApp extends StatelessWidget {
+  const SubscriptionApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '구독 관리',
-      home: InsertDataScreen(),
-    );
-  }
-}
-
-class InsertDataScreen extends StatefulWidget {
-  const InsertDataScreen({super.key});
-  @override
-  State<InsertDataScreen> createState() => _InsertDataScreenState();
-}
-
-class _InsertDataScreenState extends State<InsertDataScreen> {
-  String _result = '아직 입력 전';
-
-  Future<void> insertPlatform() async {
-    final response = await Supabase.instance.client
-        .from('platforms')
-        .insert({
-          'name': '테스트 플랫폼', // 원하는 값으로 수정
-          'group': '테스트 그룹' // 원하는 값으로 수정
-        })
-        .select(); // 결과를 select()로 가져옴
-
-    setState(() {
-      _result = response.toString();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Supabase 입력 테스트')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(_result),
-            ElevatedButton(
-              onPressed: insertPlatform,
-              child: const Text('platforms 테이블에 데이터 입력'),
-            ),
-
-            ElevatedButton(
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder : (context)=> const LogInScreen()),
-                );
-              }, 
-              child: const Text("로그인"))
-          ],
-        ),
+      title: '구독 관리 앱',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: AppColor.backgroundGray, 
+        primaryColor: AppColor.primaryBlue,
+        fontFamily: 'Pretendard',
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColor.primaryBlue),
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ko', 'KR'),
+      ],
+      home: const SplashScreen(),
     );
   }
 }
