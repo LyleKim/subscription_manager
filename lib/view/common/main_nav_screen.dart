@@ -4,6 +4,7 @@ import '../theme/style.dart';
 import '../mypage/mypage_screen.dart';
 import '../ai/llm_chat_screen.dart'; 
 import '../home/home_screen.dart';
+import '../list/list_screen.dart';
 
 class MainNavScreen extends StatefulWidget {
   const MainNavScreen({super.key});
@@ -18,7 +19,7 @@ class _MainNavScreenState extends State<MainNavScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     //const Center(child: Text("홈 화면 (대시보드)")),
-    const Center(child: Text("리스트 화면")),
+    const ListScreen(),
     const LLMChatScreen(), 
     const MyPageScreen(), 
   ];
