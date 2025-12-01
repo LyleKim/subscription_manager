@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../theme/style.dart'; 
-//import '../components/custom_text_field.dart';
 import 'signup_screen.dart';
-import 'find_pw_screen.dart'; // [수정됨] 새 파일 import
+import 'find_pw_screen.dart';
 import '../common/main_nav_screen.dart';
+import '../../services/auth_service.dart';
+import '../../controllers/login_controller.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,11 +18,43 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwController = TextEditingController();
 
-  void _bypassLogin() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const MainNavScreen()),
-    );
+  late final LoginController _loginController;
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    // SupabaseClient를 AuthService 생성자에 전달
+    final authService = AuthService(Supabase.instance.client);
+    _loginController = LoginController(authService);
+  }
+
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    final email = _emailController.text.trim();
+    final password = _pwController.text;
+
+    final result = await _loginController.logIn(email: email, password: password);
+
+    if (result.success && result.user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MainNavScreen()),
+      );
+    } else {
+      setState(() {
+        _errorMessage = result.message;
+      });
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -55,14 +89,26 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 10),
 
+              if (_errorMessage != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 14),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
               ElevatedButton(
-                onPressed: _bypassLogin,
+                onPressed: _isLoading ? null : _login,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.primaryBlue,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 ),
-                child: const Text("로그인", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text("로그인", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
               ),
               
               const SizedBox(height: 16),
@@ -76,7 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10), child: Text("|", style: TextStyle(color: Colors.grey))),
                   
-                  // [수정됨] 텍스트 및 이동 화면 변경
                   GestureDetector(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const FindPwScreen())),
                     child: const Text("비밀번호 찾기", style: TextStyle(color: Colors.grey, fontSize: 13)),
@@ -102,28 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
         fillColor: const Color(0xFFE0E0E0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide.none),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      ),
-    );
-  }
-
-  Widget _buildSocialButton({required String text, required Color textColor, required Color bgColor, required bool hasBorder, required Widget icon, required VoidCallback onTap}) {
-    return SizedBox(
-      height: 52,
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: hasBorder ? const BorderSide(color: Color(0xFFDDDDDD)) : BorderSide.none),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            const SizedBox(width: 8),
-            Text(text, style: TextStyle(color: textColor, fontSize: 15, fontWeight: FontWeight.bold)),
-          ],
-        ),
       ),
     );
   }
