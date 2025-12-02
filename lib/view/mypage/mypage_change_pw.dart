@@ -1,6 +1,8 @@
 // 비밀번호 변경 화면
 
 import 'package:flutter/material.dart';
+import 'package:supabase/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../theme/style.dart';
 
 class MyPageChangePw extends StatefulWidget {
@@ -19,17 +21,30 @@ class _MyPageChangePwState extends State<MyPageChangePw> {
   bool _showErrorMsg = false;     // 에러 메시지를 보여줄지?
 
   // [BACKEND] 현재 비밀번호 확인 로직 (임시)
-  void _checkCurrentPassword(String input) {
+  void _checkCurrentPassword(String input) async {
     // 실제로는 여기서 DB 검증을 하거나, Supabase re-authenticate 기능을 써야 함.
     // 지금은 데모용으로 '1234' 라고 치면 맞는 걸로 처리.
+    // 현재 기능구현 완료
+    final SupabaseClient _supabase = Supabase.instance.client;
+
+    try
+    {
+      final res = await _supabase.auth.signInWithPassword(//input을 pw로 재로그인 시도
+        email : _supabase.auth.currentUser!.email,
+        password: input 
+      );
+    } catch(e){
+      setState(() {
+      _isCurrentPwMatch = false;//불일치시 이 코드 실행, 새 pw입력창 비활성화
+      _showErrorMsg = true;
+      });
+
+      return;
+    }
+
     setState(() {
-      if (input == "1234") {
-        _isCurrentPwMatch = true;
-        _showErrorMsg = false;
-      } else {
-        _isCurrentPwMatch = false;
-        _showErrorMsg = true;
-      }
+      _isCurrentPwMatch = true;//일치시 이 코드 실행, 새 pw입력창 비활성화     
+      _showErrorMsg = false;     
     });
   }
 
@@ -53,7 +68,7 @@ class _MyPageChangePwState extends State<MyPageChangePw> {
                     controller: _currentPwController,
                     obscureText: true,
                     decoration: const InputDecoration(
-                      hintText: "현재 비밀번호 (테스트: 1234)",
+                      hintText: "현재 비밀번호",
                       border: OutlineInputBorder(),
                       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                     ),
@@ -88,7 +103,7 @@ class _MyPageChangePwState extends State<MyPageChangePw> {
               enabled: _isCurrentPwMatch, // 여기가 핵심! 확인 전엔 입력 불가
               obscureText: true,
               decoration: InputDecoration(
-                hintText: "새 비밀번호 입력",
+                hintText: "새 비밀번호 입력(6자리이상)",
                 filled: !_isCurrentPwMatch,
                 fillColor: _isCurrentPwMatch ? Colors.white : Colors.grey[200],
                 border: const OutlineInputBorder(),
@@ -100,9 +115,9 @@ class _MyPageChangePwState extends State<MyPageChangePw> {
             SizedBox(
               width: double.infinity, height: 52,
               child: ElevatedButton(
-                onPressed: _isCurrentPwMatch ? () {
+                onPressed: _isCurrentPwMatch ? () async {
                   // [BACKEND] 여기서 Supabase 비밀번호 변경 API 호출
-                  // await Supabase.instance.client.auth.updateUser(UserAttributes(password: _newPwController.text));
+                  await Supabase.instance.client.auth.updateUser(UserAttributes(password: _newPwController.text));
                   
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("비밀번호가 변경되었습니다.")));
                   Navigator.pop(context);
