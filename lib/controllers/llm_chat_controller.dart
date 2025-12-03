@@ -11,7 +11,7 @@ class AIChatController {
 
   Future<String> sendMessage(String prompt) async {
     final messages = [
-      {'role': 'system', 'content': '친절한 말투로 5줄 정도로만 설명해야해.'},
+      {'role': 'system', 'content': '친절한 말투로 5줄 정도로만 설명해야해. 또한 텍스트로만 설명해줘야해.'},
       {'role': 'user', 'content': prompt},
     ];
     try {

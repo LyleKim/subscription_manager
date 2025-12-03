@@ -1,7 +1,7 @@
 // lib/view/list/add_subscription_screen.dart
 
 import 'package:flutter/material.dart';
-import '../theme/style.dart';
+//import '../theme/style.dart';
 
 class AddSubscriptionScreen extends StatelessWidget {
   const AddSubscriptionScreen({super.key});

@@ -7,14 +7,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PlatformRegistrationService {
   final SupabaseClient _supabase;
-  static const String fixedUserId = '9634de49-aa9f-4235-a1c6-68b5eb15adfd';
 
   PlatformRegistrationService({SupabaseClient? supabaseClient})
       : _supabase = supabaseClient ?? Supabase.instance.client;
 
   /// 1) platforms 에 name이 있으면 그 platform_id 사용
   /// 2) 없으면 platforms 에 (name, group) insert 후 platform_id 획득
-  /// 3) plans 에 (user_id, platform_id, plan_name, payment_amount) insert
+  /// 3) plans 에 (user_id, platform_id, plan_name, payment_amount, payment_due_date) insert
   /// 4) subscribe_info 에 (user_id, platform_id, start_date) insert
   Future<String> registerPlatformAndPlan({
     required String name,
@@ -23,6 +22,13 @@ class PlatformRegistrationService {
     required int paymentAmount,
     required DateTime startDate,
   }) async {
+    // 현재 로그인된 유저 확인
+    final user = _supabase.auth.currentUser;
+    if (user == null) {
+      throw Exception('로그인된 사용자가 없습니다.');
+    }
+    final userId = user.id;
+
     // 1) platforms 에 name 존재 여부 확인
     final existing = await _supabase
         .from('platforms')
@@ -48,17 +54,18 @@ class PlatformRegistrationService {
       platformId = insertResult['platform_id'] as int;
     }
 
-    // 3) plans 에 insert
+    // 3) plans 에 insert (payment_due_date에 startDate도 저장)
     await _supabase.from('plans').insert({
-      'user_id': fixedUserId,
+      'user_id': userId,               // ✅ 로그인 사용자 id 사용
       'platform_id': platformId,
       'plan_name': planName,
       'payment_amount': paymentAmount,
+      'payment_due_date': startDate.toIso8601String(),
     });
 
     // 4) subscribe_info 에 insert
     await _supabase.from('subscribe_info').insert({
-      'user_id': fixedUserId,
+      'user_id': userId,
       'platform_id': platformId,
       'start_date': startDate.toIso8601String(),
     });

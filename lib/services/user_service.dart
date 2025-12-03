@@ -9,30 +9,36 @@ class UserService {
   UserService({SupabaseClient? supabaseClient})
       : _supabase = supabaseClient ?? Supabase.instance.client;
 
-  Future<String?> fetchUserName() async {
+  Future<Map<String, String?>> fetchUserInfo() async {
     final user = _supabase.auth.currentUser;
     if (user == null) {
-      _logger.warning('fetchUserName: currentUser is null');
-      return null;
+      _logger.warning('fetchUserInfo: currentUser is null');
+      return {'username': null, 'email': null};
     }
 
     try {
       final data = await _supabase
           .from('users')
-          .select('username')
+          .select('username, email')
           .eq('user_id', user.id)
-          .single(); // Map<String, dynamic>[web:32]
+          .single();
 
-      _logger.info('fetchUserName data: $data');
+      _logger.info('fetchUserInfo data: $data');
 
-      final name = data['username'] as String?;
-      if (name == null || name.isEmpty) {
-        _logger.warning('fetchUserName: name is null or empty for user_id=${user.id}');
+      final username = data['username'] as String?;
+      final email = data['email'] as String?;
+
+      if (username == null || username.isEmpty) {
+        _logger.warning('fetchUserInfo: username is null or empty for user_id=${user.id}');
       }
-      return name;
+      if (email == null || email.isEmpty) {
+        _logger.warning('fetchUserInfo: email is null or empty for user_id=${user.id}');
+      }
+
+      return {'username': username, 'email': email};
     } catch (e, stackTrace) {
       _logger.severe('User fetch error', e, stackTrace);
-      return null;
+      return {'username': null, 'email': null};
     }
   }
 }

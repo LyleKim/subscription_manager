@@ -1,24 +1,24 @@
-//다음 결제 예정일, 결제 금액을 가져온다.
-//**[현재 로그인을 시호, 로그인 정보가 없으면 고정 user_id를 통해 조회한다.]**
-//입력 : 플랫폼 이름(이것만 가져온다.) or null(전부 다 가져온다.)
-//동작 : 현재 로그인 되어 있는 user_id를 가지고 구독 중인 플랫폼의 
-//payment_due_date, payment_amout를 가져온다.
-//리턴 : PlatformInfo 구조체 리턴(id, name, paymentduedate, paymentamount)
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// id, name, 다음 결제 예정일, 결제 금액을 가져온다.
 class PlatformInfo {
-  final int id;                  // platforms.platform_id
-  final String name;             // platforms.name
-  final DateTime? paymentDueDate; // 다음 결제 예정일
+  final int id;
+  final String name;
+  final DateTime? paymentDueDate;
   final int? paymentAmount;
+  final String? planName;
+  final int? planId;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
   PlatformInfo({
     required this.id,
     required this.name,
     this.paymentDueDate,
     this.paymentAmount,
+    this.planName,
+    this.planId,
+    this.startDate,
+    this.endDate,
   });
 }
 
@@ -28,7 +28,6 @@ class PlatformService {
   PlatformService({SupabaseClient? supabaseClient})
       : _supabase = supabaseClient ?? Supabase.instance.client;
 
-  // 현재 결제일 기준 다음 결제 예정일(한 달 뒤)을 계산
   DateTime addOneMonth(DateTime date) {
     final year = date.year;
     final month = date.month;
@@ -64,7 +63,7 @@ class PlatformService {
 
     final subscribeRows = await _supabase
         .from('subscribe_info')
-        .select('platform_id')
+        .select('platform_id, start_date, end_date')
         .eq('user_id', userId);
 
     if (subscribeRows.isEmpty) {
@@ -74,6 +73,12 @@ class PlatformService {
     final platformIds =
         List<int>.from(subscribeRows.map((e) => e['platform_id'] as int));
 
+    final subscribeInfoByPlatformId = <int, Map<String, dynamic>>{};
+    for (final row in subscribeRows) {
+      final pid = row['platform_id'] as int;
+      subscribeInfoByPlatformId[pid] = row;
+    }
+
     final platformRows = await _supabase
         .from('platforms')
         .select('platform_id, name')
@@ -81,11 +86,11 @@ class PlatformService {
 
     final plansRows = await _supabase
         .from('plans')
-        .select('platform_id, payment_due_date, payment_amount')
+        .select('plan_id, platform_id, payment_due_date, payment_amount, plan_name')
         .eq('user_id', userId)
         .inFilter('platform_id', platformIds);
 
-    final Map<int, Map<String, dynamic>> plansByPlatformId = {};
+    final plansByPlatformId = <int, Map<String, dynamic>>{};
     for (final row in plansRows) {
       final pid = row['platform_id'] as int;
       plansByPlatformId[pid] = row;
@@ -94,17 +99,39 @@ class PlatformService {
     return platformRows.map<PlatformInfo>((e) {
       final pid = e['platform_id'] as int;
       final plan = plansByPlatformId[pid];
+      final subscribeInfo = subscribeInfoByPlatformId[pid];
 
       DateTime? nextDueDate;
       int? amount;
+      String? planName;
+      int? planId;
+      DateTime? startDate;
+      DateTime? endDate;
 
       if (plan != null) {
+        if (plan['plan_id'] != null) {
+          planId = plan['plan_id'] as int;
+        }
         if (plan['payment_due_date'] != null) {
           final rawDate = DateTime.parse(plan['payment_due_date'] as String);
           nextDueDate = addOneMonth(rawDate);
         }
         if (plan['payment_amount'] != null) {
           amount = (plan['payment_amount'] as num).toInt();
+        }
+        if (plan['plan_name'] != null) {
+          planName = plan['plan_name'] as String;
+        }
+      }
+
+      if (subscribeInfo != null) {
+        if (subscribeInfo['start_date'] != null) {
+          startDate = DateTime.parse(subscribeInfo['start_date'] as String);
+        }
+        if (subscribeInfo['end_date'] != null) {
+          endDate = DateTime.parse(subscribeInfo['end_date'] as String);
+        } else {
+          endDate = DateTime(2099, 12, 31);
         }
       }
 
@@ -113,21 +140,21 @@ class PlatformService {
         name: e['name'] as String,
         paymentDueDate: nextDueDate,
         paymentAmount: amount,
+        planName: planName,
+        planId: planId,
+        startDate: startDate,
+        endDate: endDate,
       );
     }).toList();
   }
 
-  /// name이 null이면 전체 리스트 리턴,
-  /// name이 있으면 해당 name만 필터해서 리스트(0 또는 1개) 리턴
   Future<List<PlatformInfo>> fetchPlatformsByName(String? targetName) async {
     final allPlatforms = await fetchPlatforms();
 
     if (targetName == null) {
-      // 모든 name에 대해 그대로 반환
       return allPlatforms;
     }
 
-    // 특정 name에 해당하는 것만 필터
     return allPlatforms.where((p) => p.name == targetName).toList();
   }
 }

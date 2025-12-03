@@ -1,5 +1,3 @@
-// lib/view/list/subscription_model.dart
-
 class SubscriptionModel {
   final String platformName;
   final String planName;
@@ -8,6 +6,7 @@ class SubscriptionModel {
   final String accountHint;
   final DateTime startDate;
   final DateTime endDate;
+  final int planId;
 
   SubscriptionModel({
     required this.platformName,
@@ -17,6 +16,7 @@ class SubscriptionModel {
     required this.accountHint,
     required this.startDate,
     required this.endDate,
+    required this.planId,
   });
 
   // D-Day 계산
@@ -27,8 +27,7 @@ class SubscriptionModel {
     return target.difference(today).inDays;
   }
 
-  // ✅ [NEW] 수정 기능을 위한 복사 함수
-  // 예: copyWith(price: 20000) -> 가격만 20000원으로 바뀐 새 객체 생성
+  // 수정 기능 위한 복사 함수
   SubscriptionModel copyWith({
     String? platformName,
     String? planName,
@@ -37,6 +36,7 @@ class SubscriptionModel {
     String? accountHint,
     DateTime? startDate,
     DateTime? endDate,
+    int? planId, // planId도 선택적 복사 가능
   }) {
     return SubscriptionModel(
       platformName: platformName ?? this.platformName,
@@ -46,10 +46,11 @@ class SubscriptionModel {
       accountHint: accountHint ?? this.accountHint,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      planId: planId ?? this.planId,
     );
   }
-  
-  // 백엔드 연결용
+
+  // 백엔드 연결용 factory 메서드
   factory SubscriptionModel.fromJson(Map<String, dynamic> json) {
     return SubscriptionModel(
       platformName: json['name'] ?? '이름 없음',
@@ -59,38 +60,7 @@ class SubscriptionModel {
       accountHint: json['account_hint'] ?? '',
       startDate: DateTime.parse(json['start_date']),
       endDate: DateTime.parse(json['end_date']),
+      planId: json['plan_id'] ?? 0, // null 허용하지 않으므로 기본값 0 설정
     );
   }
 }
-
-// ✅ [중요] 전역 변수로 선언하여 앱이 켜져있는 동안은 수정/삭제가 공유됨
-// 앱을 새로고침(Restart)하면 다시 이 초기값으로 돌아옵니다.
-List<SubscriptionModel> dummySubscriptions = [
-  SubscriptionModel(
-    platformName: "Netflix",
-    planName: "Standard",
-    price: 17000,
-    paymentDate: DateTime.now().add(const Duration(days: 3)),
-    accountHint: "thfl4204@naver.com",
-    startDate: DateTime(2023, 11, 15),
-    endDate: DateTime(2025, 12, 15),
-  ),
-  SubscriptionModel(
-    platformName: "Spotify",
-    planName: "Duo",
-    price: 11900,
-    paymentDate: DateTime.now().add(const Duration(days: 8)),
-    accountHint: "music_lover@gmail.com",
-    startDate: DateTime(2024, 1, 1),
-    endDate: DateTime(2025, 1, 1),
-  ),
-  SubscriptionModel(
-    platformName: "Chat GPT",
-    planName: "GPT - 4",
-    price: 29000,
-    paymentDate: DateTime.now().add(const Duration(days: 13)),
-    accountHint: "ai_master@kakao.com",
-    startDate: DateTime(2024, 5, 5),
-    endDate: DateTime(2025, 5, 5),
-  ),
-];
