@@ -53,13 +53,10 @@ class PlatformService {
 
   Future<List<PlatformInfo>> fetchPlatforms() async {
     final user = _supabase.auth.currentUser;
-    String userId;
-
     if (user == null) {
-      userId = '9634de49-aa9f-4235-a1c6-68b5eb15adfd';
-    } else {
-      userId = user.id;
+      return [];
     }
+    final userId = user.id;
 
     final subscribeRows = await _supabase
         .from('subscribe_info')
@@ -156,5 +153,20 @@ class PlatformService {
     }
 
     return allPlatforms.where((p) => p.name == targetName).toList();
+  }
+
+  // D+1 보정 시 plans 테이블의 payment_due_date 업데이트
+  Future<void> updatePaymentDueDate(int planId, String newPaymentDueDate) async {
+    final user = _supabase.auth.currentUser;
+    if (user == null) {
+      throw Exception('로그인된 사용자가 없습니다.');
+    }
+    final userId = user.id;
+    
+    await _supabase
+        .from('plans')
+        .update({'payment_due_date': newPaymentDueDate})
+        .eq('plan_id', planId)
+        .eq('user_id', userId);
   }
 }
