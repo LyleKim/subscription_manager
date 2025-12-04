@@ -18,8 +18,6 @@ class _MainNavScreenState extends State<MainNavScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // [수정] _screens 리스트를 build 함수 안으로 옮겼습니다.
-    // 이제 여기서 setState를 사용할 수 있습니다.
     final List<Widget> screens = [
       HomeScreen(
         onGoToList: () {
@@ -34,7 +32,6 @@ class _MainNavScreenState extends State<MainNavScreen> {
     ];
 
     return Scaffold(
-      // [수정] _screens 대신 위에서 만든 지역 변수 screens 사용
       body: screens[_selectedIndex], 
       
       bottomNavigationBar: BottomNavigationBar(

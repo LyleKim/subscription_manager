@@ -38,7 +38,8 @@ class _SignupScreenState extends State<SignupScreen> {
     final email = _emailController.text.trim();
     final password = _pwController.text;
     final username = _nameController.text.trim();
-
+    // 회원가입 API 요청 (email, password, username)
+    // username DB 저장 필수
     final result = await _signUpController.signUp(
       email: email,
       password: password,
@@ -53,6 +54,7 @@ class _SignupScreenState extends State<SignupScreen> {
       Navigator.pop(context);
     } else {
       setState(() {
+        // 가입 실패 사유 
         _errorMessage = result.message;
       });
     }

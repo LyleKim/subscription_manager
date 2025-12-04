@@ -7,7 +7,7 @@ import './view/home/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(); // .env 파일 로드
+  await dotenv.load(); // .env 파일 확인 (PROJECT_URL, API_KEY)
   
   await Supabase.initialize(
     url: dotenv.get("PROJECT_URL"),

@@ -1,9 +1,7 @@
-// lib/view/list/subscription_card.dart
-
 import 'package:flutter/material.dart';
 import '../theme/style.dart';
 import 'subscription_model.dart';
-import 'package:intl/intl.dart'; // pubspec.yaml에 intl 패키지 추가 필요 (숫자 콤마용)
+import 'package:intl/intl.dart'; 
 
 class SubscriptionCard extends StatelessWidget {
   final SubscriptionModel subscription;
@@ -27,7 +25,6 @@ class SubscriptionCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          // 그림자 살짝 줘서 카드 느낌
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.1),
@@ -39,7 +36,7 @@ class SubscriptionCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // 1. 로고 (나중에 이미지로 교체하기 쉽게 함수화)
+            // 1. 로고 
             _buildPlatformLogo(subscription.platformName),
             const SizedBox(width: 16),
 
@@ -96,9 +93,8 @@ class SubscriptionCard extends StatelessWidget {
     );
   }
 
-  // 로고 불러오는 함수 (나중에 assets 이미지가 생기면 여기만 수정하면 됨!)
+  // 로고 불러오는 함수
   Widget _buildPlatformLogo(String name) {
-    // 임시로 아이콘 사용
     IconData iconData = Icons.subscriptions;
     Color color = Colors.grey;
 

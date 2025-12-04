@@ -33,6 +33,7 @@ class _LLMChatScreenState extends State<LLMChatScreen> {
 
     try {
       final controller = AIChatController.basic();
+      // LLM API 호출 (prompt / Return: String reply)
       final reply = await controller.sendMessage(text);
       setState(() {
         _messages.add(reply);
@@ -49,9 +50,11 @@ class _LLMChatScreenState extends State<LLMChatScreen> {
     }
   }
 
-  // "💸 중복 구독 찾아줘" 전용 핸들러
+  // "중복 구독 찾아줘" 전용 핸들러
   Future<void> _onSendDuplicateCheck() async {
     try {
+      // 유저 보유 구독 리스트 전체 조회
+      // (uid / Return: List<PlatformInfo>)
       final platforms = await _platformInfoController.getPlatformsByName(null);
 
       // name, paymentAmount 요약 문자열

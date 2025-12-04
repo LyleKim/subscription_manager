@@ -52,10 +52,10 @@ class _FindPwScreenState extends State<FindPwScreen> {
               width: double.infinity, height: 52,
               child: ElevatedButton(
                 onPressed: () {
-                  // [BACKEND] Supabase 비밀번호 재설정 이메일 발송 API 호출
-                  // await Supabase.instance.client.auth.resetPasswordForEmail(_emailController.text);
+                  // Supabase 비밀번호 재설정 이메일 발송 API 호출
+                  // email
 
-                  // [수정됨] "찾은 화면" (완료 화면)으로 이동
+                  // await Supabase.instance.client.auth.resetPasswordForEmail(_emailController.text);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const FindPwCompleteScreen()));
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryBlue, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),

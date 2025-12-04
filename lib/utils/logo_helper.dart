@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../view/theme/style.dart'; // AppColor가 정의된 파일
+import '../view/theme/style.dart'; 
 
 class LogoHelper {
   // 카테고리(그룹) 이름을 받아서 알맞은 아이콘 데이터를 반환
@@ -25,7 +25,7 @@ class LogoHelper {
     return Icons.folder_open_rounded;
   }
 
-  // 아이콘을 보여주는 위젯
+  // 아이콘 위젯
   static Widget buildCategoryIcon(String? group, {double size = 40.0}) {
     final iconData = getCategoryIcon(group);
     
@@ -33,13 +33,11 @@ class LogoHelper {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        // [수정 포인트 1] Colors -> AppColor로 변경
         color: AppColor.primaryBlue.withOpacity(0.1), 
         shape: BoxShape.circle,
       ),
       child: Icon(
         iconData,
-        // [수정 포인트 2] Colors -> AppColor로 변경
         color: AppColor.primaryBlue, 
         size: size * 0.6,
       ),

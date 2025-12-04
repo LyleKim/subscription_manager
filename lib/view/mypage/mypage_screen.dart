@@ -27,7 +27,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
   }
 
   Future<void> _loadUserNameOnce() async {
-    // 여기서 직접 Future 호출
+    // 유저 닉네임 조회 API
     final fetched = await _userNameController.loadUserName();
     if (!mounted) return;
 
@@ -57,7 +57,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
       });
       return;
     }
-
+    // 유저 닉네임 수정 API (Update User Profile)
+    // Params: newName
     final success = await _renameController.renameUser(newName);
     if (!mounted) return;
 
@@ -215,6 +216,8 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        // 로그아웃 API (SignOut)
+                        // 세션/토큰 삭제 처리
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(

@@ -39,11 +39,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final email = _emailController.text.trim();
     final password = _pwController.text;
-
+    // 로그인 API 요청 (email, password)
     final result = await _loginController.logIn(email: email, password: password);
 
     if (result.success && result.user != null) {
       if (!mounted) return;
+      // 로그인 성공 시 토큰/세션 처리 확인 필요
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MainNavScreen()),
@@ -51,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       if (!mounted) return;
       setState(() {
+        // 서버 리턴 에러 메시지 표시
         _errorMessage = result.message;
       });
     }
@@ -74,11 +76,9 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 1. 로고 및 타이틀 영역 (MonoLogo 적용됨)
+                // 1. 로고 및 타이틀
                 Column(
                   children: [
-                    // 만든 MonoLogo 위젯 적용 (세로 모드)
-                    // size를 30 정도로 주면 내부 로직에 의해 적절히 커집니다.
                     const MonoLogo(isSmall: false),
                     
                     const SizedBox(height: 16), // 로고와 설명 사이 간격
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // ✨ 세련된 입력창 위젯
+  // 입력창 위젯
   Widget _buildModernInput(
     String hint, 
     TextEditingController controller, 
