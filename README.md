@@ -46,25 +46,25 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
     ```
 
   
-##Contributors  
+## Main Contributors  
 <div style="display: inline-block; text-align: center; margin-right: 15px;">
   <a href="https://github.com/KimSeonMin00" target="_blank">
     <img src="https://github.com/KimSeonMin00.png" width="40" style="border-radius:50%;" alt="KimSeonMin00" />
   </a>
   <div style="font-size: 12px; margin-top: 4px;">KimSeonMin00</div>
-</div>
+</div>  
 <div style="display: inline-block; text-align: center;">
   <a href="https://github.com/soundkr4111" target="_blank">
     <img src="https://github.com/soundkr4111.png" width="40" style="border-radius:50%;" alt="soundkr4111" />
   </a>
   <div style="font-size: 12px; margin-top: 4px;">soundkr4111</div>
-</div>
+</div>  
 <div style="display: inline-block; text-align: center; margin-right: 15px;">
   <a href="https://github.com/LyleKim" target="_blank">
     <img src="https://github.com/LyleKim.png" width="40" style="border-radius:50%;" alt="LyleKim" />
   </a>
   <div style="font-size: 12px; margin-top: 4px;">LyleKim</div>
-</div>
+</div>  
 <div style="display: inline-block; text-align: center;">
   <a href="https://github.com/LyleKim" target="_blank">
     <img src="https://github.com/LyleKim.png" width="40" style="border-radius:50%;" alt="LyleKim" />
