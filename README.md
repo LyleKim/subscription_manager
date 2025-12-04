@@ -5,13 +5,14 @@
 
 ## What is it for?
 - AS-IS
+
 As subscription platforms increase, people often lose track of what they’re subscribed to.  
 This can lead to inefficient spending due to overlapping or similar subscriptions.
 
 
 - TO-BE
-It allows users to see all their subscriptions at a glance, giving them an intuitive understanding of what they’re currently subscribed to.
 
+It allows users to see all their subscriptions at a glance, giving them an intuitive understanding of what they’re currently subscribed to.
 Through an LLM, users can receive personalized recommendations related to their subscriptions.  
 Based on the user’s existing subscriptions, the LLM provides guidance for making better subscription choices.
 
@@ -46,4 +47,9 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
 
 
 ##Contributors
-[![Contributors](https://contributors.anvyl.com/image?repo=LyleKim/subscription_manager)](https://github.com/LyleKim/subscription_manager/graphs/contributors)
+[![githubuser](https://github.com/KimSeonMin00.png)](https://github.com/KimSeonMin00)
+[![githubuser](https://github.com/LyleKim.png)](https://github.com/LyleKim)
+[![githubuser](https://github.com/LyleKim.png)](https://github.com/LyleKim)
+[![githubuser](https://github.com/LyleKim.png)](https://github.com/LyleKim)
+
+
