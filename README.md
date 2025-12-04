@@ -16,7 +16,7 @@ It allows users to see all their subscriptions at a glance, giving them an intui
 Through an LLM, users can receive personalized recommendations related to their subscriptions.  
 Based on the user’s existing subscriptions, the LLM provides guidance for making better subscription choices.  
 
-
+<br/>
 
 
 
@@ -29,7 +29,7 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
   Groq: https://groq.com  
 
 
-
+<br/>
 
 ### Run to dev
 
@@ -44,7 +44,7 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
     [1]: macOS (macos)
     [2]: Chrome (chrome)    
     ```
-
+<br/>
   
 ## Main Contributors  
 <div style="display: inline-block; text-align: center; margin-right: 15px;">
@@ -70,7 +70,13 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
     <img src="https://github.com/LyleKim.png" width="40" style="border-radius:50%;" alt="LyleKim" />
   </a>
   <div style="font-size: 12px; margin-top: 4px;">LyleKim</div>
-</div>
+</div>  
+
+<br/>
+
+
+  **The order is by name.**
+
 
 
 
