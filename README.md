@@ -66,8 +66,8 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
   <div style="font-size: 12px; margin-top: 4px;">LyleKim</div>
 </div>  
 <div style="display: inline-block; text-align: center;">
-  <a href="https://github.com/LyleKim" target="_blank">
-    <img src="https://github.com/LyleKim.png" width="40" style="border-radius:50%;" alt="LyleKim" />
+  <a href="https://github.com/hwnikm" target="_blank">
+    <img src="https://github.com/hwnikm.png" width="40" style="border-radius:50%;" alt="hwnikm" />
   </a>
   <div style="font-size: 12px; margin-top: 4px;">LyleKim</div>
 </div>  
