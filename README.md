@@ -111,7 +111,9 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
   프로젝트 전체 일정 컨트롤  
   필요 기능 기획  
   AS-IS, TO-BE 설계  
-  기능 타당성 검토  
+  피그마,UI,UX 디자인 검토  
+  프론트엔드 최적화
+  
   
   
   
