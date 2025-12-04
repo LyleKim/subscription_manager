@@ -77,6 +77,44 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
 
   **The order is by name.**
 
+<br/>
+
+## What we do
+- 김선민(Backend) :  
+  로그인, 회원가입(이메일 pw username 입력) 기능  
+  username, pw 변경 기능  
+  user id 에 해당하는 구독 데이터 탐색 기능  
+
+<br/>
+
+- 김준석(Backend) :  
+  개발환경 구축 및 기술 스택 선정  
+  결제 금액 및 예정일 계산 기능  
+  LLM 질의 API 호출 기능  
+  구독 목록 수정,추가,삭제 기능  
+  백엔드 코드 최적화  
+
+<br/>
+  
+- 김소리(Frontend) :  
+  전체 UI 디자인(컬러, 글꼴)  
+  인트로 화면 구현  
+  로그인 화면 구현  
+  홈 화면 구현  
+  구독 리스트 및 추가, 수정 화면 구현  
+  llm 서비스 화면 구현  
+  마이페이지 화면 구현  
+
+<br/>
+
+- 김환희(PM)  :  
+  프로젝트 전체 일정 컨트롤  
+  필요 기능 기획  
+  AS-IS, TO-BE 설계
+  기능 타당성 검토  
+  
+  
+  
 
 
 
