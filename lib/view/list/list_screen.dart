@@ -1,15 +1,14 @@
-// lib/view/list/list_screen.dart
-
 import 'package:flutter/material.dart';
 import '../theme/style.dart';
 import '../../controllers/user_name_controller.dart';
 import '../../controllers/user_email_controller.dart';
 import '../../controllers/platform_controller.dart';
 import '../../services/platform_service.dart';
-
 import '../../controllers/platform_registration_controller.dart';
 import '../list/list_detail_screen.dart';
 import '../list/subscription_model.dart';
+import '../../utils/logo_helper.dart'; 
+import '../components/mono_logo.dart'; 
 
 class ListScreen extends StatefulWidget {
   const ListScreen({super.key});
@@ -22,13 +21,12 @@ class _ListScreenState extends State<ListScreen> {
   String _sortType = 'date';
 
   final UserNameController _userNameController = UserNameController();
-  final UserController _userController = UserController(); // UserController 인스턴스 추가
+  final UserController _userController = UserController();
   final PlatformInfoController _platformInfoController = PlatformInfoController();
-  final PlatformRegistrationController _registrationController =
-      PlatformRegistrationController(); // ✅ 추가
+  final PlatformRegistrationController _registrationController = PlatformRegistrationController();
 
   String? _userName;
-  String? _userEmail; // 이메일 저장용 변수 추가
+  String? _userEmail;
   List<PlatformInfo> _platforms = [];
   bool _isLoading = true;
 
@@ -45,7 +43,7 @@ class _ListScreenState extends State<ListScreen> {
 
     try {
       final name = await _userNameController.loadUserName();
-      final email = await _userController.getUserEmail(); // 이메일 불러오기
+      final email = await _userController.getUserEmail();
       final platforms = await _platformInfoController.getPlatformsByName(null);
 
       setState(() {
@@ -106,6 +104,7 @@ class _ListScreenState extends State<ListScreen> {
       endDate: p.endDate ?? DateTime.now(),
       accountHint: _userEmail ?? '',
       planId: p.planId ?? 0,
+      group: p.group,
     );
   }
 
@@ -125,22 +124,11 @@ class _ListScreenState extends State<ListScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Text(
-                          "LOGO",
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                    
+                    const Center(
+                      child: MonoLogo(isSmall: true),
                     ),
+
                     const SizedBox(height: 24),
                     Text.rich(
                       TextSpan(
@@ -204,18 +192,13 @@ class _ListScreenState extends State<ListScreen> {
                                 final p = _platforms[index];
 
                                 return InkWell(
-                                  borderRadius:
-                                      BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(16),
                                   onTap: () async {
-                                    final subscription =
-                                        _toSubscriptionModel(p);
-
-                                    final result =
-                                        await Navigator.push(
+                                    final subscription = _toSubscriptionModel(p);
+                                    final result = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            ListDetailScreen(
+                                        builder: (context) => ListDetailScreen(
                                           subscription: subscription,
                                         ),
                                       ),
@@ -226,60 +209,59 @@ class _ListScreenState extends State<ListScreen> {
                                     }
                                   },
                                   child: Container(
-                                    margin:
-                                        const EdgeInsets.symmetric(
-                                            vertical: 8),
+                                    margin: const EdgeInsets.symmetric(vertical: 8),
                                     padding: const EdgeInsets.all(16),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.circular(16),
+                                      borderRadius: BorderRadius.circular(16),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.grey
-                                              .withOpacity(0.1),
+                                          color: Colors.grey.withOpacity(0.1),
                                           spreadRadius: 1,
                                           blurRadius: 5,
-                                          offset:
-                                              const Offset(0, 2),
+                                          offset: const Offset(0, 2),
                                         ),
                                       ],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .start,
+                                        // 왼쪽 영역: 로고 + 이름
+                                        Row(
                                           children: [
-                                            Text(
-                                              p.name,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight:
-                                                    FontWeight.bold,
-                                                color: AppColor
-                                                    .textBlack,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 4),
-                                            Text(
-                                              p.planName ??
-                                                  '플랜 정보 없음',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color:
-                                                    Colors.grey[600],
-                                              ),
+                                            // LogoHelper를 통해 그룹에 맞는 아이콘 표시
+                                            LogoHelper.buildCategoryIcon(p.group, size: 40),
+                                            
+                                            const SizedBox(width: 12), 
+
+                                            // 이름 및 플랜명
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  p.name,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppColor.textBlack,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  p.planName ?? '플랜 정보 없음',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
+                                        
+                                        // 오른쪽 영역: 가격 + 결제일
                                         Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                             Text(
                                               p.paymentAmount != null
@@ -287,10 +269,8 @@ class _ListScreenState extends State<ListScreen> {
                                                   : "- 원",
                                               style: const TextStyle(
                                                 fontSize: 16,
-                                                fontWeight:
-                                                    FontWeight.bold,
-                                                color: AppColor
-                                                    .textBlack,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColor.textBlack,
                                               ),
                                             ),
                                             const SizedBox(height: 4),
@@ -300,8 +280,7 @@ class _ListScreenState extends State<ListScreen> {
                                                   : "다음 결제일 없음",
                                               style: TextStyle(
                                                 fontSize: 12,
-                                                color:
-                                                    Colors.grey[500],
+                                                color: Colors.grey[500],
                                               ),
                                             ),
                                           ],
@@ -314,8 +293,7 @@ class _ListScreenState extends State<ListScreen> {
                             ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          bottom: 20, top: 10),
+                      padding: const EdgeInsets.only(bottom: 20, top: 10),
                       child: Center(
                         child: TextButton(
                           onPressed: () {
@@ -347,23 +325,34 @@ class _ListScreenState extends State<ListScreen> {
         text,
         style: TextStyle(
           fontSize: 14,
-          fontWeight:
-              isSelected ? FontWeight.bold : FontWeight.normal,
-          color: isSelected
-              ? AppColor.primaryBlue
-              : Colors.grey[600],
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          color: isSelected ? AppColor.primaryBlue : Colors.grey[600],
         ),
       ),
     );
   }
 
-  // [+ 추가하기] 바텀시트: DB 반영 후 리스트 새로고침
+  // [수정된 부분] 그룹을 텍스트 입력 대신 드롭박스로 선택
   void _showAddSheet(BuildContext context) {
     final platformController = TextEditingController();
-    final groupController = TextEditingController();
     final planController = TextEditingController();
     final priceController = TextEditingController();
     DateTime? startDate;
+    
+    // 선택된 카테고리를 저장할 변수
+    String? selectedGroup;
+
+    // 카테고리 목록 (LogoHelper가 인식하는 키워드 위주)
+    final List<String> categoryList = [
+      'OTT',
+      '음악',
+      '쇼핑',
+      '배달',
+      '게임',
+      'AI',
+      '생활',
+      '기타',
+    ];
 
     showModalBottomSheet(
       context: context,
@@ -391,42 +380,53 @@ class _ListScreenState extends State<ListScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-
-                    // 플랫폼 이름
+                    
+                    // 1. 플랫폼 이름 (예: 넷플릭스)
                     TextField(
                       controller: platformController,
-                      decoration:
-                          const InputDecoration(labelText: "플랫폼 이름"),
+                      decoration: const InputDecoration(labelText: "플랫폼 이름"),
                     ),
                     const SizedBox(height: 10),
 
-                    // 그룹
-                    TextField(
-                      controller: groupController,
+                    // 2. 카테고리 선택 (드롭다운)
+                    DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
-                        labelText: "그룹 (예: OTT, 음악 등)",
+                        labelText: "카테고리 (종류)",
+                        border: UnderlineInputBorder(),
                       ),
+                      value: selectedGroup,
+                      items: categoryList.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setModalState(() {
+                          selectedGroup = newValue;
+                        });
+                      },
+                      hint: const Text("선택해주세요"),
                     ),
-                    const SizedBox(height: 10),
 
-                    // 요금제 이름
+                    const SizedBox(height: 10),
+                    
+                    // 3. 요금제 이름
                     TextField(
                       controller: planController,
-                      decoration:
-                          const InputDecoration(labelText: "요금제 이름"),
+                      decoration: const InputDecoration(labelText: "요금제 이름"),
                     ),
                     const SizedBox(height: 10),
-
-                    // 결제 금액
+                    
+                    // 4. 가격
                     TextField(
                       controller: priceController,
-                      decoration:
-                          const InputDecoration(labelText: "가격 (원)"),
+                      decoration: const InputDecoration(labelText: "가격 (원)"),
                       keyboardType: TextInputType.number,
                     ),
                     const SizedBox(height: 10),
-
-                    // 구독 시작일
+                    
+                    // 5. 날짜 선택
                     GestureDetector(
                       onTap: () async {
                         final now = DateTime.now();
@@ -452,8 +452,7 @@ class _ListScreenState extends State<ListScreen> {
                           border: Border.all(color: Colors.grey.shade400),
                         ),
                         child: Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               startDate == null
@@ -470,8 +469,9 @@ class _ListScreenState extends State<ListScreen> {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 20),
+                    
+                    // 6. 추가하기 버튼
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -480,17 +480,24 @@ class _ListScreenState extends State<ListScreen> {
                         ),
                         onPressed: () async {
                           final name = platformController.text.trim();
-                          final group = groupController.text.trim();
+                          // 드롭다운에서 선택된 그룹 사용, 선택 안 했으면 '기타'로 처리
+                          final group = selectedGroup ?? "기타";
                           final planName = planController.text.trim();
-                          final paymentAmountText =
-                              priceController.text.trim();
+                          final paymentAmountText = priceController.text.trim();
+                          
                           final startDateText = startDate != null
                               ? "${startDate!.year.toString().padLeft(4, '0')}-"
                                 "${startDate!.month.toString().padLeft(2, '0')}-"
                                 "${startDate!.day.toString().padLeft(2, '0')}"
                               : "";
 
-                          // 컨트롤러 호출 (성공: 1, 실패: 0)
+                          if (name.isEmpty) {
+                             ScaffoldMessenger.of(this.context).showSnackBar(
+                              const SnackBar(content: Text('플랫폼 이름을 입력해주세요.')),
+                            );
+                            return;
+                          }
+
                           final result = await _registrationController.register(
                             name: name,
                             group: group,
@@ -499,13 +506,11 @@ class _ListScreenState extends State<ListScreen> {
                             startDateText: startDateText,
                           );
 
-                          if (!mounted) return; // ListScreen이 여전히 살아있는지 확인 [file:91]
+                          if (!mounted) return;
 
                           if (result == 1) {
-                            Navigator.pop(bottomSheetContext); // 바텀시트 닫기
-                            await _loadData();       // DB에서 다시 조회
-
-                            // ✅ ListScreen의 context로 스낵바 띄우기
+                            Navigator.pop(bottomSheetContext);
+                            await _loadData();
                             ScaffoldMessenger.of(this.context).showSnackBar(
                               const SnackBar(
                                 content: Text('새 구독이 추가되었습니다.'),
@@ -516,8 +521,7 @@ class _ListScreenState extends State<ListScreen> {
                           } else {
                             ScaffoldMessenger.of(this.context).showSnackBar(
                               const SnackBar(
-                                content:
-                                    Text('구독 추가에 실패했습니다. 입력 값을 확인해주세요.'),
+                                content: Text('구독 추가에 실패했습니다. 입력 값을 확인해주세요.'),
                                 backgroundColor: Colors.red,
                                 duration: Duration(seconds: 3),
                               ),

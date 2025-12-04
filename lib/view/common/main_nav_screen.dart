@@ -16,18 +16,27 @@ class MainNavScreen extends StatefulWidget {
 class _MainNavScreenState extends State<MainNavScreen> {
   int _selectedIndex = 0;
 
-  
-  final List<Widget> _screens = const [
-    HomeScreen(),        // 0: 홈
-    ListScreen(),        // 1: 리스트 화면
-    LLMChatScreen(),     // 2: AI 분석
-    MyPageScreen(),      // 3: 마이페이지
-  ];
-
   @override
   Widget build(BuildContext context) {
+    // [수정] _screens 리스트를 build 함수 안으로 옮겼습니다.
+    // 이제 여기서 setState를 사용할 수 있습니다.
+    final List<Widget> screens = [
+      HomeScreen(
+        onGoToList: () {
+          setState(() {
+            _selectedIndex = 1; // 리스트 탭(인덱스 1)으로 이동
+          });
+        },
+      ),
+      const ListScreen(),      // 1: 리스트 화면
+      const LLMChatScreen(),   // 2: AI 분석
+      const MyPageScreen(),    // 3: 마이페이지
+    ];
+
     return Scaffold(
-      body: _screens[_selectedIndex],
+      // [수정] _screens 대신 위에서 만든 지역 변수 screens 사용
+      body: screens[_selectedIndex], 
+      
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) => setState(() => _selectedIndex = index),

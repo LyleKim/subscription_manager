@@ -1,8 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// [중요] 여기 PlatformInfo 클래스에 'group'이 반드시 있어야 합니다!
 class PlatformInfo {
   final int id;
   final String name;
+  final String group; // [핵심] 이 줄이 없어서 에러가 났던 것입니다.
   final DateTime? paymentDueDate;
   final int? paymentAmount;
   final String? planName;
@@ -13,6 +15,7 @@ class PlatformInfo {
   PlatformInfo({
     required this.id,
     required this.name,
+    required this.group, // [핵심] 생성자에도 필수
     this.paymentDueDate,
     this.paymentAmount,
     this.planName,
@@ -58,6 +61,7 @@ class PlatformService {
     }
     final userId = user.id;
 
+    // 1. 구독 정보 조회
     final subscribeRows = await _supabase
         .from('subscribe_info')
         .select('platform_id, start_date, end_date')
@@ -76,11 +80,13 @@ class PlatformService {
       subscribeInfoByPlatformId[pid] = row;
     }
 
+    // 2. 플랫폼 기본 정보 조회 (group 컬럼 포함)
     final platformRows = await _supabase
         .from('platforms')
-        .select('platform_id, name')
+        .select('platform_id, name, group') 
         .inFilter('platform_id', platformIds);
 
+    // 3. 플랜 정보 조회
     final plansRows = await _supabase
         .from('plans')
         .select('plan_id, platform_id, payment_due_date, payment_amount, plan_name')
@@ -93,6 +99,7 @@ class PlatformService {
       plansByPlatformId[pid] = row;
     }
 
+    // 4. 데이터 병합
     return platformRows.map<PlatformInfo>((e) {
       final pid = e['platform_id'] as int;
       final plan = plansByPlatformId[pid];
@@ -135,6 +142,8 @@ class PlatformService {
       return PlatformInfo(
         id: pid,
         name: e['name'] as String,
+        // [핵심] DB에서 가져온 값을 group 변수에 할당
+        group: e['group'] != null ? e['group'] as String : '기타', 
         paymentDueDate: nextDueDate,
         paymentAmount: amount,
         planName: planName,

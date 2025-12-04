@@ -4,6 +4,7 @@ import '../auth/login_screen.dart';
 import '../../controllers/rename_controller.dart';
 import '../../controllers/user_name_controller.dart';
 import 'mypage_change_pw.dart';
+import '../components/mono_logo.dart'; 
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -83,12 +84,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
         child: Column(
           children: [
             const SizedBox(height: 60),
-            const Center(
-              child: Chip(
-                label: Text("LOGO", style: TextStyle(color: Colors.grey)),
-                backgroundColor: Color(0xFFE0E0E0),
-              ),
-            ),
+            const MonoLogo(isSmall: true),
             const SizedBox(height: 30),
 
             Container(

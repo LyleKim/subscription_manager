@@ -4,6 +4,7 @@ import '../components/custom_text_field.dart';
 import '../../services/auth_service.dart';
 import '../../controllers/signup_controller.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../components/mono_logo.dart'; 
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -49,7 +50,6 @@ class _SignupScreenState extends State<SignupScreen> {
     });
 
     if (result.success) {
-      // 회원가입 성공 시 로그인 화면으로 돌아가기
       Navigator.pop(context);
     } else {
       setState(() {
@@ -62,22 +62,23 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text("회원가입"), centerTitle: true, backgroundColor: Colors.white, elevation: 0),
+      appBar: AppBar(
+        title: const Text("회원가입", style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            const Center(
-              child: CircleAvatar(
-                radius: 40,
-                backgroundColor: Color(0xFFE0E0E0),
-                child: Text("Logo", style: TextStyle(color: Colors.grey, fontSize: 16)),
-              ),
-            ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
+            const MonoLogo(isSmall: true), 
+            const SizedBox(height: 40),
 
             CustomTextField(label: "이메일 (아이디)", hint: "example@email.com", controller: _emailController),
-            CustomTextField(label: "비밀번호", hint: "비밀번호 입력", isPassword: true, controller: _pwController),
+            CustomTextField(label: "비밀번호", hint: "6자 이상 입력해주세요", isPassword: true, controller: _pwController),
             CustomTextField(label: "이름", hint: "사용자 이름 입력", controller: _nameController),
 
             const SizedBox(height: 20),
@@ -92,7 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
 
             SizedBox(
               width: double.infinity, height: 52,
@@ -100,11 +101,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 onPressed: _isLoading ? null : _signUp,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.primaryBlue,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 0,
                 ),
                 child: _isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text("회원가입 완료", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                    : const Text("가입 완료", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
