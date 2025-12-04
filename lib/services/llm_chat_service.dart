@@ -19,7 +19,7 @@ class AIChatService {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'model': 'groq/compound',
+        'model': 'meta-llama/llama-4-scout-17b-16e-instruct',
         'messages': messages,
       }),
     );
