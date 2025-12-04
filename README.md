@@ -1,20 +1,20 @@
 # subscription_manager
 
-숭실대학교 소프트웨어학부 2025년 2학기 데이터베이스 응용 팀프로젝트 결과물입니다.
+숭실대학교 소프트웨어학부 2025년 2학기 데이터베이스 응용 팀프로젝트 결과물입니다.  
 
 
 ## What is it for?
 - AS-IS
 
 As subscription platforms increase, people often lose track of what they’re subscribed to.  
-This can lead to inefficient spending due to overlapping or similar subscriptions.
+This can lead to inefficient spending due to overlapping or similar subscriptions.  
 
 
 - TO-BE
 
 It allows users to see all their subscriptions at a glance, giving them an intuitive understanding of what they’re currently subscribed to.
 Through an LLM, users can receive personalized recommendations related to their subscriptions.  
-Based on the user’s existing subscriptions, the LLM provides guidance for making better subscription choices.
+Based on the user’s existing subscriptions, the LLM provides guidance for making better subscription choices.  
 
 
 
@@ -26,7 +26,7 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
 - You need to prepare the Supabase URL and API, obtain the Groq LLM API key, and set up the .env file.
 
   Supabase: https://supabase.com  
-  Groq: https://groq.com
+  Groq: https://groq.com  
 
 
 
@@ -45,11 +45,20 @@ Based on the user’s existing subscriptions, the LLM provides guidance for maki
     [2]: Chrome (chrome)    
     ```
 
-
+  
 ##Contributors
-[![githubuser](https://github.com/KimSeonMin00.png)](https://github.com/KimSeonMin00)
-[![githubuser](https://github.com/LyleKim.png)](https://github.com/LyleKim)
-[![githubuser](https://github.com/LyleKim.png)](https://github.com/LyleKim)
-[![githubuser](https://github.com/LyleKim.png)](https://github.com/LyleKim)
+<a href="https://github.com/KimSeonMin00" target="_blank">
+  <img src="https://github.com/KimSeonMin00.png" width="40" style="border-radius:50%; margin-right:10px;" alt="user1" />
+</a>
+<a href="https://github.com/soundkr4111" target="_blank">
+  <img src="https://github.com/soundkr4111.png" width="40" style="border-radius:50%; margin-right:10px;" alt="user2" />
+</a>
+<a href="https://github.com/LyleKim" target="_blank">
+  <img src="https://github.com/LyleKim.png" width="40" style="border-radius:50%; margin-right:10px;" alt="user3" />
+</a>
+<a href="https://github.com/LyleKim" target="_blank">
+  <img src="https://github.com/LyleKim" width="40" style="border-radius:50%; margin-right:10px;" alt="user4" />
+</a>
+
 
 
