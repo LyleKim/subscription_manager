@@ -1,66 +1,50 @@
+// lib/view/list/subscription_model.dart
+
 class SubscriptionModel {
   final String platformName;
-  final String planName;
   final int price;
+  final String planName;
   final DateTime paymentDate;
-  final String accountHint;
   final DateTime startDate;
   final DateTime endDate;
+  final String accountHint;
   final int planId;
+  final String group; // [추가됨] 상세 화면에서 아이콘 보여줄 때 필요!
 
   SubscriptionModel({
     required this.platformName,
-    required this.planName,
     required this.price,
+    required this.planName,
     required this.paymentDate,
-    required this.accountHint,
     required this.startDate,
     required this.endDate,
+    required this.accountHint,
     required this.planId,
+    required this.group, // [추가됨] 필수값
   });
 
-  // D-Day 계산
-  int get dDay {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final target = DateTime(paymentDate.year, paymentDate.month, paymentDate.day);
-    return target.difference(today).inDays;
-  }
-
-  // 수정 기능 위한 복사 함수
+  // [추가됨] copyWith 메서드 (수정 시 데이터 갱신을 쉽게 하기 위함)
   SubscriptionModel copyWith({
     String? platformName,
-    String? planName,
     int? price,
+    String? planName,
     DateTime? paymentDate,
-    String? accountHint,
     DateTime? startDate,
     DateTime? endDate,
-    int? planId, // planId도 선택적 복사 가능
+    String? accountHint,
+    int? planId,
+    String? group,
   }) {
     return SubscriptionModel(
       platformName: platformName ?? this.platformName,
-      planName: planName ?? this.planName,
       price: price ?? this.price,
+      planName: planName ?? this.planName,
       paymentDate: paymentDate ?? this.paymentDate,
-      accountHint: accountHint ?? this.accountHint,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      accountHint: accountHint ?? this.accountHint,
       planId: planId ?? this.planId,
-    );
-  }
-
-  // 백엔드 연결용 factory 메서드
-  factory SubscriptionModel.fromJson(Map<String, dynamic> json) {
-    return SubscriptionModel(
-      platformName: json['name'] ?? '이름 없음',
-      price: json['payment_amount'] ?? 0,
-      planName: json['plan_name'] ?? '기본 요금제',
-      paymentDate: DateTime.parse(json['payment_due_date']),
-      accountHint: json['account_hint'] ?? '',
-      startDate: DateTime.parse(json['start_date']),
-      endDate: DateTime.parse(json['end_date']),
-      planId: json['plan_id'] ?? 0, // null 허용하지 않으므로 기본값 0 설정
+      group: group ?? this.group,
     );
   }
 }

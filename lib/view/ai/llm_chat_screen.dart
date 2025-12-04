@@ -95,16 +95,12 @@ $summary
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          "AI 금융 비서",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          "AI_Chat",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {},
-        ),
       ),
       body: Column(
         children: [

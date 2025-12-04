@@ -13,9 +13,13 @@ class HomeData {
 class SubscriptionItem {
   final String platformName;
   final String dDayText;
+  final DateTime paymentDate; 
+  final String group; 
 
   SubscriptionItem({
     required this.platformName,
     required this.dDayText,
+    required this.paymentDate, // 필수값
+    this.group = '기타',         // 기본값
   });
 }
