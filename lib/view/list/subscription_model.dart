@@ -1,15 +1,16 @@
 // lib/view/list/subscription_model.dart
 
 class SubscriptionModel {
-  final String platformName;
-  final int price;
-  final String planName;
-  final DateTime paymentDate;
-  final DateTime startDate;
-  final DateTime endDate;
-  final String accountHint;
-  final int planId;
-  final String group; // [추가됨] 상세 화면에서 아이콘 보여줄 때 필요!
+  // Response JSON 구조 (DB 컬럼 매핑 필요)
+  final String platformName; // 서비스명
+  final int price;           // 월 결제액
+  final String planName;     // 요금제명 (Premium, Basic 등)
+  final DateTime paymentDate;// 다음 결제일
+  final DateTime startDate;  // 구독 시작일
+  final DateTime endDate;    // 구독 종료일 (해지 시)
+  final String accountHint;  // 연결된 계정 정보
+  final int planId;          // PK (수정/삭제용)
+  final String group;        // 카테고리 (OTT, Shopping 등 - 아이콘 매핑용)
 
   SubscriptionModel({
     required this.platformName,
@@ -20,10 +21,10 @@ class SubscriptionModel {
     required this.endDate,
     required this.accountHint,
     required this.planId,
-    required this.group, // [추가됨] 필수값
+    required this.group, 
   });
 
-  // [추가됨] copyWith 메서드 (수정 시 데이터 갱신을 쉽게 하기 위함)
+  // copyWith 메서드 (수정 시 데이터 갱신을 쉽게 하기 위함)
   SubscriptionModel copyWith({
     String? platformName,
     int? price,

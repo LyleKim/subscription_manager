@@ -44,8 +44,8 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true, // [NEW] 로고 중앙 정렬
-        title: const MonoLogo(isSmall: true), // [NEW] 만드신 로고 추가
+        centerTitle: true, 
+        title: const MonoLogo(isSmall: true),                        
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () {
@@ -178,8 +178,6 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
       ),
     );
   }
-
-  // ... (이하 _buildDetailRow, _showEditSheet, _showDeleteDialog 함수는 기존과 동일) ...
   
   Widget _buildDetailRow(
     String label,
@@ -244,7 +242,8 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
                   onPressed: () async {
                     final newPrice = int.tryParse(priceController.text) ?? currentData.price;
                     final newPlan = planController.text;
-
+                    // 구독 정보 수정 API (Update)
+                    // Params: planId, planName, paymentAmount
                     final success = await _planController.savePlan(
                       planId: currentData.planId,
                       platformName: currentData.platformName,
@@ -305,6 +304,8 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
                 Navigator.of(dialogContext).pop();
                 bool isSuccess = false;
                 try {
+                  // 구독 삭제 API (Delete)
+                  // Params: platformName (또는 platformId)
                   final deleteCount = await _unregistrationController.cancelPlatformSubscription(
                     platformName: currentData.platformName,
                   );

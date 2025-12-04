@@ -42,8 +42,11 @@ class _ListScreenState extends State<ListScreen> {
     });
 
     try {
+      // 유저 프로필 조회 (Return: name, email)
       final name = await _userNameController.loadUserName();
       final email = await _userController.getUserEmail();
+      // 구독 리스트 전체 조회 (Return: List<PlatformInfo>)
+      // 필드: id, name, paymentAmount, paymentDueDate, planName, group 등
       final platforms = await _platformInfoController.getPlatformsByName(null);
 
       setState(() {
@@ -332,7 +335,7 @@ class _ListScreenState extends State<ListScreen> {
     );
   }
 
-  // [수정된 부분] 그룹을 텍스트 입력 대신 드롭박스로 선택
+  // 그룹을 텍스트 입력 대신 드롭박스로 선택
   void _showAddSheet(BuildContext context) {
     final platformController = TextEditingController();
     final planController = TextEditingController();
@@ -497,7 +500,9 @@ class _ListScreenState extends State<ListScreen> {
                             );
                             return;
                           }
-
+                          
+                          // 새 구독 추가 API (Create)
+                          // Params: name, group(category), planName, price, startDate
                           final result = await _registrationController.register(
                             name: name,
                             group: group,

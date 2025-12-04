@@ -1,8 +1,8 @@
-// 앱 초기화면
+// lib/view/splash/splash_screen.dart
 
 import 'package:flutter/material.dart';
 import 'dart:async';
-import '../theme/style.dart';
+import '../theme/style.dart'; 
 import '../auth/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,23 +12,22 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-  // 애니메이션 상태 관리
+class _SplashScreenState extends State<SplashScreen> {
   bool _startAnimation = false;
 
   @override
   void initState() {
     super.initState();
     
-    // 0.5초 뒤에 아이콘들이 가운데로 모임
+    // 0.5초 뒤 애니메이션 시작
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         _startAnimation = true;
       });
     });
 
-    // 2.5초 뒤에 로그인 화면으로 이동
-    Timer(const Duration(milliseconds: 2500), () {
+    // 3초 뒤 로그인 화면으로 이동
+    Timer(const Duration(milliseconds: 3000), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -38,50 +37,96 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
-      // 수정된 부분: fit: StackFit.expand 추가
       body: Stack(
-        fit: StackFit.expand, // ★ 이 줄을 추가하면 스택이 화면 전체 크기로 늘어납니다.
-        alignment: Alignment.center,
+        fit: StackFit.expand,
         children: [
-          // 배경에 흩어진 아이콘들
-          _buildFloatingIcon(Icons.play_circle_fill, Colors.red, -100, -150),
-          _buildFloatingIcon(Icons.movie, Colors.black, 120, -100),
-          _buildFloatingIcon(Icons.music_note, Colors.green, -120, 100),
-          _buildFloatingIcon(Icons.shopping_bag, Colors.blue, 100, 150),
+          // 1. [애니메이션 레이어] 폴더로 들어가는 아이콘들
+          // 위치는 그대로 두고 크기만 키웠습니다.
+          _buildIncomingIcon(Icons.play_circle_fill, Colors.red, -80, 200),     
+          _buildIncomingIcon(Icons.movie, Colors.black, 80, 250),              
+          _buildIncomingIcon(Icons.music_note, Colors.green, -120, 300),       
+          _buildIncomingIcon(Icons.shopping_bag, Colors.blue, 100, 180),       
+          _buildIncomingIcon(Icons.local_shipping, Colors.orange, 0, 350),     
 
-          // 중앙 로고 및 텍스트
-          AnimatedOpacity(
-            duration: const Duration(seconds: 1),
-            opacity: _startAnimation ? 1.0 : 0.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.all_inclusive, size: 80, color: AppColor.primaryBlue),
-                SizedBox(height: 20),
-                Text(
-                  "스마트한 구독 관리\n모두 모았다!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+          // 2. [고정 레이어] 상단 MONO, 중앙 폴더, 하단 슬로건
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+            children: [
+              // [상단] MONO 텍스트
+              Padding(
+                padding: EdgeInsets.only(top: screenHeight * 0.15), 
+                child: const Text(
+                  "MONO",
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w900,
+                    color: AppColor.textBlack,
+                    letterSpacing: 2.0,
+                  ),
                 ),
-              ],
-            ),
+              ),
+
+              // [중앙] 우리 파일 로고 (폴더 아이콘)
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  color: AppColor.primaryBlue.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.folder_copy_rounded,
+                  size: 60,
+                  color: AppColor.primaryBlue,
+                ),
+              ),
+
+              // [하단] 슬로건
+              Padding(
+                padding: EdgeInsets.only(bottom: screenHeight * 0.1), 
+                child: const Text(
+                  "모두 모아 한 번에.",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  // 두둥실 떠다니는 아이콘 위젯
-  Widget _buildFloatingIcon(IconData icon, Color color, double startX, double startY) {
+  // 폴더로 빨려 들어가는 아이콘 위젯
+  Widget _buildIncomingIcon(IconData icon, Color color, double offsetX, double startYOffset) {
+    // 화면 중앙 좌표
+    final centerX = MediaQuery.of(context).size.width / 2 - 27.5; // 아이콘 크기(55) 절반 보정
+    final centerY = MediaQuery.of(context).size.height / 2 - 27.5;
+
     return AnimatedPositioned(
-      duration: const Duration(seconds: 1, milliseconds: 500),
-      curve: Curves.easeInOutBack, // 쫀득한 움직임
-      // 애니메이션 시작 전엔 퍼져있고, 시작하면(true) 가운데(0,0) 근처로 모임
-      left: _startAnimation ? MediaQuery.of(context).size.width / 2 + (startX / 4) - 20 : MediaQuery.of(context).size.width / 2 + startX,
-      top: _startAnimation ? MediaQuery.of(context).size.height / 2 + (startY / 4) - 20 : MediaQuery.of(context).size.height / 2 + startY,
-      child: Icon(icon, size: 40, color: color.withOpacity(0.5)),
+      duration: const Duration(milliseconds: 1500), 
+      curve: Curves.easeOutQuart,
+      
+      // 애니메이션 이동 경로 설정
+      left: _startAnimation ? centerX : centerX + offsetX,
+      top: _startAnimation ? centerY : centerY + startYOffset,
+      
+      child: AnimatedOpacity(
+        duration: const Duration(milliseconds: 1500),
+        opacity: _startAnimation ? 0.0 : 1.0, 
+        child: Transform.scale(
+          scale: _startAnimation ? 0.5 : 1.0, 
+          // [수정됨] 아이콘 크기를 40 -> 55로 키움!
+          child: Icon(icon, size: 55, color: color.withOpacity(0.6)),
+        ),
+      ),
     );
   }
 }

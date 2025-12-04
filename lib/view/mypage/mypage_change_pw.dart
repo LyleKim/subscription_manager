@@ -19,7 +19,7 @@ class _MyPageChangePwState extends State<MyPageChangePw> {
   bool _showErrorMsg = false;     // 비번 틀림 메시지 표시 여부
   bool _isLoading = false;        // 로딩 상태
 
-  // 1. [BACKEND] 현재 비밀번호 확인 로직 (재로그인 시도)
+  // 1. 현재 비밀번호 확인 로직 (재로그인 시도)
   Future<void> _checkCurrentPassword() async {
     final inputPw = _currentPwController.text.trim();
     if (inputPw.isEmpty) return;
@@ -76,7 +76,7 @@ class _MyPageChangePwState extends State<MyPageChangePw> {
     }
   }
 
-  // 2. [BACKEND] 새 비밀번호로 변경 로직
+  // 2. 새 비밀번호로 변경 로직
   Future<void> _updatePassword() async {
     final newPw = _newPwController.text.trim();
     if (newPw.isEmpty) return;

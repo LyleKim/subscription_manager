@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // 홈 데이터 조회 (Return: 구독 리스트, 총 지출액)
     _homeDataFuture = _homeController.fetchHomeData();
   }
 
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           final data = snapshot.data!;
           final totalList = List<SubscriptionItem>.from(data.subscriptions);
 
-          // 1. 빨간 알림 박스용 (0~3일 남은 것)
+          // 1. 빨간 알림 박스 (0~3일 남은 것)
           final upcomingPayments = totalList.where((item) {
             final dDay = _calculateDDay(item.paymentDate);
             return dDay >= 0 && dDay <= 3;
@@ -109,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 10),
 
-                  // [수정됨] 버튼 클릭 시 탭 이동 함수 실행
+                  // 버튼 클릭 시 탭 이동 함수 실행
                   if (data.subscriptions.length > 3)
                     SizedBox(
                       width: double.infinity,
@@ -147,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 알림 섹션 위젯 (생략 없이 복구됨)
+  // 알림 섹션 위젯 
   Widget _buildNotificationSection(List<SubscriptionItem> items) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
@@ -191,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 총 지출 섹션 위젯 (생략 없이 복구됨)
+  // 총 지출 섹션 위젯 
   Widget _buildTotalExpenseSection({required int totalExpense}) {
     final dailyCost = (totalExpense / 30).round();
     return Container(
@@ -214,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // 리스트 아이템 위젯 (생략 없이 복구됨)
+  // 리스트 아이템 위젯 
   Widget _buildSubscriptionItem(SubscriptionItem item) {
     final dDay = _calculateDDay(item.paymentDate);
     String dDayString;

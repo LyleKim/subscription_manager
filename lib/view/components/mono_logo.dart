@@ -20,26 +20,26 @@ class MonoLogo extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(size * 0.2), // 아이콘 크기에 비례한 패딩
           decoration: BoxDecoration(
-            color: AppColor.primaryBlue.withOpacity(0.1), // 연한 블루 배경
-            shape: BoxShape.circle, // 둥근 사각형 느낌 (앱 아이콘처럼)
+            color: AppColor.primaryBlue.withOpacity(0.1), 
+            shape: BoxShape.circle, 
           ),
           child: Icon(
-            Icons.folder_copy_rounded, // 둥근 폴더 아이콘
+            Icons.folder_copy_rounded, 
             size: size, 
             color: AppColor.primaryBlue,
           ),
         ),
         
-        SizedBox(width: size * 0.3), // 아이콘과 텍스트 사이 간격
+        SizedBox(width: size * 0.3), 
 
         // [로고 텍스트]
         Text(
           "MONO", 
           style: TextStyle(
-            fontSize: size * 0.9, // 텍스트는 아이콘보다 살짝 작게
-            fontWeight: FontWeight.w800, // 두께감 있게
+            fontSize: size * 0.9, 
+            fontWeight: FontWeight.w800,  
             color: AppColor.textBlack,
-            letterSpacing: -0.5, // 자간을 살짝 좁혀서 단단한 느낌
+            letterSpacing: -0.5,      
             height: 1.0,  
           ),
         ),
