@@ -65,8 +65,7 @@ class _LLMChatScreenState extends State<LLMChatScreen> {
 
 $summary
 
-이 목록을 기반으로 "중복 구독"이 무엇인지 찾아서 설명해줘.
-각 중복 구독 쌍과, 그로 인한 월 지출 총액을 함께 알려줘.
+이 목록을 기반으로 "겹치는 구독"이 무엇인지 찾아서 설명해줘.
 ''';
 
       await _onSend(prompt);
@@ -273,7 +272,7 @@ $summary
             runSpacing: 8,
             children: [
               _buildChip("💸 중복 구독 찾아줘", isDuplicateCheck: true),
-              _buildChip("📊 2030세대가 많이 구독하는 플랫폼에는 뭐가 있어?"),
+              _buildChip("📊 2030세대가 많이 구독하는 유료 플랫폼에는 뭐가 있어?"),
               _buildChip("💰 넷플릭스 싸게 보는 법"),
             ],
           ),

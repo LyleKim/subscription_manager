@@ -4,29 +4,34 @@
 
 
 ## What is it for?
-- 추후 추가 예정
+- AS-IS
+As subscription platforms increase, people often lose track of what they’re subscribed to.  
+This can lead to inefficient spending due to overlapping or similar subscriptions.
+
+-TO-BE
+It allows users to see all their subscriptions at a glance, giving them an intuitive understanding of what they’re currently subscribed to.
+
+Through an LLM, users can receive personalized recommendations related to their subscriptions.  
+Based on the user’s existing subscriptions, the LLM provides guidance for making better subscription choices.
+
 
 
 ## How to start develop?
 
+### Before you start dev
+- You need to prepare the Supabase URL and API, obtain the Groq LLM API key, and set up the .env file.
+
+Supabase: https://supabase.com  
+Groq: https://groq.com
+
+
+
 ### Run to dev
 
-1. To install dependencies:
+1. To run:
 
-  ```
-  flutter pub add supabase supabase_flutter
 
-  # Insatall Supabase basic library and dedicated tool library for flutter
-  ```
-
-  ```
-  flutter pub add flutter_dotenv
-
-  #flutter_dotenv package for environment variable management
-  ```
-
-2. To run:
-
+  update a pubspec.ymal and
     ```bash
     flutter run
 
@@ -34,3 +39,4 @@
     [1]: macOS (macos)
     [2]: Chrome (chrome)    
     ```
+
